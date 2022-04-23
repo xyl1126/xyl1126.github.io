@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyv.meifa.mapper.YyvXiaoFeiMapper">
+   <select id="selectAll" resultType="YyvXiaoFei">
+       select y.id as id,userCode,userName,spName,benciyuE,benci,xTime,sumjin,yuE,zcount from Yyv_xiaofei y inner join yyv_user u on y.userId=u.id inner join yyv_sp s on  y.spId=s.id
+       <trim prefix="where" prefixOverrides="and">
+           <if test="userCode!=null"> and userCode like concat('%',#{userCode},'%')</if>
+           <if test="userName!=null"> and userName like concat('%',#{userName},'%')</if>
+       </trim>
+       order by xTime desc
+       limit #{pageIndex},#{pageSize}
+         </select>
+    <delete id="delYyvXiaoFei" parameterType="int">
+        delete from yyv_xiaofei where id=#{id}
+    </delete>
+    <insert id="insertYyvXiaoFei" parameterType="YyvXiaoFei">
+        insert into yyv_xiaofei(userId,spId,benci,benciyuE,xTime)value (#{userId},#{spId},#{benci},#{benciyuE},#{xTime})
+    </insert>
+    <select id="selectUserId" parameterType="int" resultType="int">
+        select count(1) from yyv_xiaofei where userId=#{userId}
+    </select>
+    <select id="selectSpId" parameterType="int" resultType="int">
+        select count(1) from yyv_xiaofei where spId=#{spId}
+    </select>
+    <delete id="deleteUserId" parameterType="int">
+        delete from yyv_xiaofei where userId=#{userId}
+    </delete>
+    <delete id="deteleSpId" parameterType="int">
+        delete from yyv_xiaofei where spId=#{spId}
+    </delete>
+    <select id="selectYyvXiaoFeiCount" resultType="int">
+        select count(1) from Yyv_xiaofei y inner join yyv_user u on y.userId=u.id inner join yyv_sp s on  y.spId=s.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="userCode!=null"> and userCode like concat('%',#{userCode},'%')</if>
+            <if test="userName!=null"> and userName like concat('%',#{userName},'%')</if>
+        </trim>
+    </select>
+
+
+
+</mapper>
